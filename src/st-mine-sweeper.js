@@ -23,7 +23,49 @@ import { NotImplementedError } from '../extensions/index.js';
  *  [1, 1, 1]
  * ]
  */
-export default function minesweeper (/* matrix */) {
-  throw new NotImplementedError('Not implemented');
-  // remove line with error and write your code here
+export default function minesweeper(matrix) {
+  const result = [];
+  matrix.forEach((array, i) => {
+    array.reduce((total, item, idx) => {
+      if (i === 0) {
+        if (idx === 0) {
+          total.push(array[idx + 1] + matrix[i + 1][idx] + matrix[i + 1][idx + 1])
+        }
+        else if (idx === array.length - 1) {
+          total.push(array[idx - 1] + matrix[i + 1][idx] + matrix[i + 1][idx - 1]);
+          result.push(total);
+          total = [];
+        }
+        else {
+          total.push(array[idx - 1] + array[idx + 1] + matrix[i + 1][idx] + matrix[i + 1][idx - 1] + matrix[i + 1][idx + 1]);
+        }
+      } else if (i === matrix.length - 1) {
+        if (idx === 0) {
+          total.push(array[idx + 1] + matrix[i - 1][idx] + matrix[i - 1][idx + 1])
+        }
+        else if (idx === array.length - 1) {
+          total.push(array[idx - 1] + matrix[i - 1][idx] + matrix[i - 1][idx - 1]);
+          result.push(total);
+          total = [];
+        }
+        else {
+          total.push(array[idx - 1] + array[idx + 1] + matrix[i - 1][idx] + matrix[i - 1][idx - 1] + matrix[i - 1][idx + 1]);
+        }
+      } else {
+        if (idx === 0) {
+          total.push(array[idx + 1] + matrix[i + 1][idx] + matrix[i - 1][idx] + matrix[i - 1][idx + 1] + matrix[i + 1][idx + 1])
+        }
+        else if (idx === array.length - 1) {
+          total.push(array[idx - 1] + matrix[i - 1][idx] + matrix[i + 1][idx] + matrix[i - 1][idx - 1] + matrix[i + 1][idx - 1]);
+          result.push(total);
+          total = [];
+        }
+        else {
+          total.push(array[idx - 1] + array[idx + 1] + matrix[i - 1][idx] + matrix[i - 1][idx - 1] + matrix[i - 1][idx + 1] + matrix[i + 1][idx - 1] + matrix[i + 1][idx + 1]);
+        }
+      }
+      return total;
+    }, []);
+  });
+  return result;
 }
